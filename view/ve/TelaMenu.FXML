@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #13ABC4;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MenuController">
+   <children>
+      <ImageView fitHeight="400.0" fitWidth="300.0" layoutX="330.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Rectangle%2013.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="453.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@logo.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="BotaoCaixa" layoutX="400.0" layoutY="246.0" mnemonicParsing="false" onAction="#GoCaixa" prefHeight="17.0" prefWidth="160.0" style="-fx-background-color: #f1f1f1;" text="Caixa" />
+      <Label fx:id="erroAutenticacao" layoutX="400.0" layoutY="285.0" text="Alguma credencial está errada" textFill="#fc7171" visible="false" />
+      <Button fx:id="BotaoEstoque" layoutX="400.0" layoutY="203.0" mnemonicParsing="false" onAction="#GoEstoque" prefHeight="17.0" prefWidth="160.0" style="-fx-background-color: #f1f1f1;" text="Estoque" />
+      <Button fx:id="BotaoCompras" layoutX="400.0" layoutY="289.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="160.0" style="-fx-background-color: #f1f1f1;" text="Compras" />
+   </children>
+</Pane>

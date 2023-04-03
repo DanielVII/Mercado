@@ -1,31 +1,24 @@
 package controller;
 
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import view.Telas;
 import model.Service.ProdutoBO;
-import model.Service.TipoBO;
 import model.entity.Produto;
 
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import Fabrica.ElementoFxmlFabrica;
 
-public class FuncionarioController extends ElementoFxmlFabrica{
-	@FXML private Pane PaneFuncionario;
-	@FXML private Label nomeUsuario;
+public class CaixaController extends ElementoFxmlFabrica{
+	@FXML private Pane PaneCaixa;
 	@FXML private TextField buscar;
 	@FXML private TextField quantidade;
 	@FXML private Label NomeProduto;
@@ -39,20 +32,18 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 	
 	private List<Produto> produtosNaComanda = new ArrayList<Produto>();
 	
-	public static String staticNome;
 	private static ProdutoBO produtoBO = new ProdutoBO();
-	private static TipoBO tipoBO = new TipoBO();
 
-	private int scroll = 0; // sempre será menor igual a zero
-	private int tamanhoAntesDeItensNaComanda;
+	private int scroll = 0; // sempre será menor igual a zero. Usado para lógica de scroll da comanda.
+	
+	private int tamanhoAntesDeItensNaComanda; // Usado para limpar itens da tela.
 	
 	public void initialize() {
-		nomeUsuario.setText(staticNome);
-		this.tamanhoAntesDeItensNaComanda = this.PaneFuncionario.getChildren().size();
+		this.tamanhoAntesDeItensNaComanda = this.PaneCaixa.getChildren().size();
 	}
 	
 	public void LogOut(ActionEvent event) throws Exception{
-		Telas.telaLogin();		
+		Telas.telaMenu();		
 	}
 
 
@@ -73,15 +64,10 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 	}
 	
 	private void removeInfo() {
-		this.PaneFuncionario.getChildren().remove(
+		this.PaneCaixa.getChildren().remove(
 				this.tamanhoAntesDeItensNaComanda, 
-				this.PaneFuncionario.getChildren().size()
+				this.PaneCaixa.getChildren().size()
 				);
-	}
-	
-	private boolean ProdutoEstahNaComanda(Produto prod) {
-		
-		return false;
 	}
 	
 	public void adicionarProduto(ActionEvent event) throws Exception{
@@ -89,28 +75,30 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 		this.preco.setText("0.00");
 		this.NomeProduto.setText("nome Produto");
 		this.precoTotalProduto.setText("0.00");
-		
-		//removendo msg de erro da tela
+		//								//
+		//removendo msg de erro da tela//
+		//							  //
 		try {
-			this.PaneFuncionario.getChildren().remove(this.PaneFuncionario.lookup("#erro1"));
+			this.PaneCaixa.getChildren().remove(this.PaneCaixa.lookup("#erro1"));
 		}catch (Exception e) {
 			//aloha
 		}
 		
 		try {
-			this.PaneFuncionario.getChildren().remove(this.PaneFuncionario.lookup("#erro2"));
+			this.PaneCaixa.getChildren().remove(this.PaneCaixa.lookup("#erro2"));
 		}catch (Exception e) {
 			//aloha
 		}
 		try {
-			this.PaneFuncionario.getChildren().remove(this.PaneFuncionario.lookup("#erro3"));
+			this.PaneCaixa.getChildren().remove(this.PaneCaixa.lookup("#erro3"));
 		}catch (Exception e) {
 			//aloha
 		}
 		
 		Produto produto = new Produto();
 		produto.setCodBarras(buscar.getText());
-		//vendo se cod é valido
+		
+		//vendo se cod de barras é valido
 		try {
 			List<Produto> produtoColetado= produtoBO.listarPorCampoEspecifico(produto,"cod_de_barras");		
 			produto = produtoColetado.get(0);
@@ -124,10 +112,12 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 					);
 			msgErro.setTextFill(Color.RED);
 			msgErro.setId("erro1");
-			this.PaneFuncionario.getChildren().add(msgErro);
+			this.PaneCaixa.getChildren().add(msgErro);
 			return;
 		}
-		//colocando info na tela
+		//						//
+		//colocando info na tela//
+		//						//
 		this.preco.setText(String.valueOf(produto.getPreco()));
 		this.NomeProduto.setText(produto.getNome());
 		
@@ -138,8 +128,6 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 			Double quantEscolhido = Double.parseDouble(QuantidadeString);
 			
 			produto.setQuantidade(quantEscolhido);
-			
-			Double quantEmEstoque = produto.getQuantidade();
 			
 			boolean prodComanda = false;
 			
@@ -240,7 +228,7 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 						}
 					});
 					
-					this.PaneFuncionario.getChildren().add(TF);				});
+					this.PaneCaixa.getChildren().add(TF);				});
 				LX -= 220.0 + 45;
 				LY += distancia;
 				
@@ -253,7 +241,7 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 						);
 				
 				LY += distancia;
-				this.PaneFuncionario.getChildren().addAll(marcaLinha, linha, linha2, bDel, bEdit);
+				this.PaneCaixa.getChildren().addAll(marcaLinha, linha, linha2, bDel, bEdit);
 			}
 		}
 	}
@@ -272,7 +260,7 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 					);
 			msgErro.setTextFill(Color.RED);
 			msgErro.setId("erro4");
-			this.PaneFuncionario.getChildren().add(msgErro);
+			this.PaneCaixa.getChildren().add(msgErro);
 			return false;
 		}
 		if (quantEscolhido <= 0 || this.quantidade.getText() == null) {
@@ -285,28 +273,12 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 					);
 			msgErro.setTextFill(Color.RED);
 			msgErro.setId("erro2");
-			this.PaneFuncionario.getChildren().add(msgErro);
+			this.PaneCaixa.getChildren().add(msgErro);
 			return false;}
 		
-		produto.setTipo(this.tipoBO.BuscarTodaInfoSoComId(produto.getTipo().getId()));
-		if (produto.getTipo().getFormaDeVenda().equals("u")) {
-			int quantInt = quantEscolhido.intValue();
-			if(quantEscolhido - quantInt > 0) {
-				Label msgErro = LabelFabrica(
-						"Quantidade Escolhida é decimal, o produto é unitario",
-						100.0,
-						340.0,
-						12,
-						false
-						);
-				msgErro.setTextFill(Color.RED);
-				msgErro.setId("erro3");
-				this.PaneFuncionario.getChildren().add(msgErro);
-				return false;
-			}
-		}
+
 		
-		List<Produto> listProd = this.produtoBO.listarPorCampoEspecifico(produto, "cod_de_barras");//Isso é necessario pois o produto fornecido em alguns contextos terão a quantidade existente na comanda, n no bd
+		List<Produto> listProd = CaixaController.produtoBO.listarPorCampoEspecifico(produto, "cod_de_barras");//Isso é necessario pois o produto fornecido em alguns contextos terão a quantidade existente na comanda, n no bd
 		Produto novoProd = listProd.get(0);
 		Double quantEmEstoque = novoProd.getQuantidade();
 
@@ -320,7 +292,7 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 					);
 			msgErro.setTextFill(Color.RED);
 			msgErro.setId("erro5");
-			this.PaneFuncionario.getChildren().add(msgErro);
+			this.PaneCaixa.getChildren().add(msgErro);
 			return false;
 		}
 		
@@ -349,114 +321,5 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 		this.removeInfo();
 	}
 	
-	public void  pesquisar() {
-		ImageView IV = ImageFabrica(
-				873.0,
-				458.0,
-				80.0,
-				75.0,
-				"view/ve/RectanglePrincipal.png"
-				);
-		
-		Label t = LabelFabrica(
-					"Pesquisar Produto", 
-					80.0, 
-					75.0, 
-					18, 
-					true,
-					800.0
-					);
-		
-		Double LX = 330.0;
-		Double LY = 120.0;
-		Double mudaLY = 30.0;
-		Double mudaLX = 20.0;
-		
-		TextField pesquisa = TextFieldFabrica(
-				"pesquisaProd",
-				300.0,
-				12.0,
-				LX, LY
-				);
-		ChoiceBox<String> tipoEscolhido = ChoiceBoxFabrica(
-				"CBpesquisafunc",
-				LX + 310, LY,
-				80.0
-				);
-		
-		tipoEscolhido.setItems(FXCollections.observableArrayList(
-				"Nome", 
-				"Cod. Barras", 
-				"Marca"));
-		
-		LY += mudaLY;
-		final Double LYErro = LY;
-		pesquisa.setOnAction(event->{
-			String textoPesquisar = pesquisa.getText();
-			String tipoPesquisar = tipoEscolhido.getValue();
-			if(textoPesquisar == null || tipoPesquisar == null) {
-				Label msgErro = LabelFabrica(
-						"Escolha um tipo ou escreva o que deseja pesquisar",
-						LX,
-						LYErro,
-						12,
-						false
-						);
-				msgErro.setTextFill(Color.RED);
-				msgErro.setId("erro1");
-				this.PaneFuncionario.getChildren().add(msgErro);
-				return;
-			}else {
-				List<Produto> listProd = new ArrayList<Produto>();;
-				Produto prod = new Produto();
-				switch (tipoPesquisar){
-					case "Nome":
-						prod.setNome(textoPesquisar);
-						listProd = this.produtoBO.listarPorCampoEspecificoIncompleto(prod, "nome");
-						break;
-					case "Cod. Barras":
-						prod.setCodBarras(textoPesquisar);
-						listProd = this.produtoBO.listarPorCampoEspecificoIncompleto(prod, "cod_de_barras");
-						break;
-					case "Marca":
-						prod.setMarca(textoPesquisar);
-						listProd = this.produtoBO.listarPorCampoEspecificoIncompleto(prod, "marca");
-						break;
-				}
-				Double LYAloha = LYErro;
-				
-				LYAloha += mudaLY;
-				Label lbb = LabelFabrica(
-						"Cod. - Nome - Marca - R$Preço",
-						LX,
-						LYAloha,
-						12,
-						true,
-						300.0
-						);
-				this.PaneFuncionario.getChildren().add(lbb);
-				LYAloha += mudaLY;
-				for (int x=0;x<listProd.size();x++) {
-					String valorS = String.valueOf(listProd.get(x).getPreco());
-					System.out.println(valorS);
-					Label lb = LabelFabrica(
-							listProd.get(x).getCodBarras() + " - " + 
-									listProd.get(x).getNome() + " - "+
-									listProd.get(x).getMarca() + " - "+ 
-									"R$" + valorS,
-							LX,
-							LYAloha,
-							12,
-							true,
-							300.0
-							);
-					this.PaneFuncionario.getChildren().add(lb);
-					LYAloha += mudaLY;
-				}
-			}
-			
-			
-		});
-		this.PaneFuncionario.getChildren().addAll(IV, t,pesquisa, tipoEscolhido);
-	}
+
 }

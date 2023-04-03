@@ -1,6 +1,8 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -16,17 +18,17 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import view.Telas;
 import model.Service.ProdutoBO;
-import model.Service.TipoBO;
 import model.entity.Produto;
-import model.entity.Tipo;
 import Fabrica.ElementoFxmlFabrica;
 
-public class GerenteController extends ElementoFxmlFabrica{
-	@FXML private Pane PaneGerente;
+public class EstoqueController extends ElementoFxmlFabrica{
+	@FXML private Pane PaneEstoque;
 	@FXML private Label nomeUsuario;
 	@FXML private TextField Pesquisa;
 	@FXML private ChoiceBox<String> EscolhaPesquisa;
 	@FXML private Button pagina1;
+	@FXML private Button BotaoQuantidade;
+	@FXML private Button BotaoPreco;
 	
 	public static String staticNome;
 	
@@ -37,11 +39,13 @@ public class GerenteController extends ElementoFxmlFabrica{
 	private int quantItensListados;
 	
 	private ProdutoBO prodBO = new ProdutoBO();
-	private TipoBO BOTipo = new TipoBO();
+	
+	private boolean ordenarQuantidadeMenorParaMaior = true;
+	private boolean ordenarPrecoMenorParaMaior = true;
 	
 	public void initialize() {
 		nomeUsuario.setText(staticNome);
-		this.quantItensPagInicial = PaneGerente.getChildren().size();
+		this.quantItensPagInicial = PaneEstoque.getChildren().size();
 		this.GerarTela(true);
 		
 		this.pagina1.setStyle("-fx-background-color:#d3d3d3 ;");
@@ -53,9 +57,55 @@ public class GerenteController extends ElementoFxmlFabrica{
 		
 	}
 	
+	public void OrdenarQuantidade() {
+		if(this.ordenarQuantidadeMenorParaMaior) {
+			Collections.sort(this.ListaProdutos, Comparator.comparingDouble(Produto ::getQuantidade));
+			
+			this.RemoveInfo(true);
+			this.ColocarInfoNaTela();
+			
+			this.BotaoPreco.setStyle("-fx-border-color:#FFF; -fx-background-color: #5BD0E3;");
+			this.ordenarPrecoMenorParaMaior = true;
+			
+			this.BotaoQuantidade.setStyle("-fx-border-color:#FFD966; -fx-background-color: #5BD0E3;");
+			this.ordenarQuantidadeMenorParaMaior = false;
+		}else {
+			Collections.reverse(this.ListaProdutos);
+			
+			this.RemoveInfo(true);
+			this.ColocarInfoNaTela();
+			
+			this.BotaoQuantidade.setStyle("-fx-border-color:#655DBB; -fx-background-color: #5BD0E3;");
+			this.ordenarQuantidadeMenorParaMaior = true;
+		}
+	}
+	
+	public void OrdenarPreco() {
+		if(this.ordenarPrecoMenorParaMaior) {
+			Collections.sort(this.ListaProdutos, Comparator.comparingDouble(Produto ::getPreco));
+			
+			this.RemoveInfo(true);
+			this.ColocarInfoNaTela();
+			
+			this.BotaoQuantidade.setStyle("-fx-border-color:#FFF; -fx-background-color: #5BD0E3;");
+			this.ordenarQuantidadeMenorParaMaior = true;
+			
+			this.BotaoPreco.setStyle("-fx-border-color:#FFD966; -fx-background-color: #5BD0E3;");
+			this.ordenarPrecoMenorParaMaior = false;
+		}else {
+			Collections.reverse(this.ListaProdutos);
+			
+			this.RemoveInfo(true);
+			this.ColocarInfoNaTela();
+			
+			this.BotaoPreco.setStyle("-fx-border-color:#655DBB; -fx-background-color: #5BD0E3;");
+			this.ordenarPrecoMenorParaMaior = true;
+		}
+	}
+	
 	private void RemoveInfo(boolean tudo) {
-		if (tudo) this.PaneGerente.getChildren().remove(this.quantItensPagInicial,  this.PaneGerente.getChildren().size());
-		else this.PaneGerente.getChildren().remove(this.quantItensListados,  this.PaneGerente.getChildren().size());
+		if (tudo) this.PaneEstoque.getChildren().remove(this.quantItensPagInicial,  this.PaneEstoque.getChildren().size());
+		else this.PaneEstoque.getChildren().remove(this.quantItensListados,  this.PaneEstoque.getChildren().size());
 	}
 	
  	private void ColocarInfoNaTela() {
@@ -137,17 +187,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 					LarguraLabel);
 			
 			LayX += distanciaEntreElementos;
-			
-			Label tipo = LabelFabrica(
-					prod.getTipo().getNome(), 
-					LayX, 
-					LayY, 
-					TamanhoFont, 
-					Centralizar, 
-					LarguraLabel
-					);
-			
-			LayX += distanciaEntreElementos;
+
 			
 			Label preco = LabelFabrica(
 					String.valueOf(prod.getPreco()), 
@@ -183,12 +223,11 @@ public class GerenteController extends ElementoFxmlFabrica{
 					);
 			edit.setOnAction(action -> EditarProduto(action));
 			
-			this.PaneGerente.getChildren().addAll(
+			this.PaneEstoque.getChildren().addAll(
 					nome,
 					cod,
 					marca,
 					quant,
-					tipo,
 					preco,
 					dele,
 					edit
@@ -233,7 +272,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 					e.printStackTrace();
 				}
 			});
-			PaneGerente.getChildren().add(b);
+			PaneEstoque.getChildren().add(b);
 			
 			LX += 16;
 		}
@@ -243,11 +282,11 @@ public class GerenteController extends ElementoFxmlFabrica{
 		if (ColetarInfoNova) this.ListaProdutos = this.prodBO.listarTodos();
 		this.ColocarInfoNaTela();
 		this.ColocarBotoesPag();
-		this.quantItensListados = PaneGerente.getChildren().size();;
+		this.quantItensListados = PaneEstoque.getChildren().size();;
 	}
 	
 	public void MudarPagina(ActionEvent e) throws Exception {
-		Button botaoAnterior = (Button) this.PaneGerente.lookup("#pagina"+this.PaginaAtual);
+		Button botaoAnterior = (Button) this.PaneEstoque.lookup("#pagina"+this.PaginaAtual);
 		botaoAnterior.setStyle("-fx-background-color:#ffffff ;");
 		
 		Button b = (Button) e.getSource();
@@ -257,12 +296,12 @@ public class GerenteController extends ElementoFxmlFabrica{
 		
 		this.GerarTela(false);
 		
-		Button botaoFocado = (Button) this.PaneGerente.lookup("#pagina"+this.PaginaAtual);
+		Button botaoFocado = (Button) this.PaneEstoque.lookup("#pagina"+this.PaginaAtual);
 		botaoFocado.setStyle("-fx-background-color:#d3d3d3 ;");
 	}
 	
 	public void LogOut(ActionEvent event) throws Exception{
-		Telas.telaLogin();
+		Telas.telaMenu();
 	}
 
 	public void DeletarProduto(ActionEvent e) {
@@ -318,11 +357,11 @@ public class GerenteController extends ElementoFxmlFabrica{
 						false
 						);
 				msgErro.setTextFill(Color.RED);
-				this.PaneGerente.getChildren().add(msgErro);
+				this.PaneEstoque.getChildren().add(msgErro);
 			}
 		});
 		
-		this.PaneGerente.getChildren().addAll(deletar, voltar);
+		this.PaneEstoque.getChildren().addAll(deletar, voltar);
 		
 	}
 	
@@ -361,7 +400,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 					LY
 					);
 			
-			this.PaneGerente.getChildren().addAll(l, tf);
+			this.PaneEstoque.getChildren().addAll(l, tf);
 			LX -= distanciaElementos;
 			LY += 34;
 		}
@@ -393,13 +432,13 @@ public class GerenteController extends ElementoFxmlFabrica{
 				"#06FF6A"
 				);
 		bMudar.setOnAction(event -> {
-			TextField tFCode = (TextField) this.PaneGerente.lookup("#cod"); 
+			TextField tFCode = (TextField) this.PaneEstoque.lookup("#cod"); 
 			Produto prod = new Produto();
 			prod.setCodBarras(tFCode.getText());
 			
 			List<Produto> lProd = this.prodBO.listarPorCampoEspecifico(prod, "cod_de_barras");
 			
-			TextField tFQuanti = (TextField) this.PaneGerente.lookup("#quant");
+			TextField tFQuanti = (TextField) this.PaneEstoque.lookup("#quant");
 			Double quantidade = Double.parseDouble(tFQuanti.getText());
 			int quantInt = quantidade.intValue();
 			
@@ -418,10 +457,10 @@ public class GerenteController extends ElementoFxmlFabrica{
 						12,
 						false);
 				msgErro.setTextFill(Color.RED);
-				this.PaneGerente.getChildren().add(msgErro);
+				this.PaneEstoque.getChildren().add(msgErro);
 			}
 		});
-		this.PaneGerente.getChildren().addAll( bV, bMudar);
+		this.PaneEstoque.getChildren().addAll( bV, bMudar);
 	}
  
 	public void EditarProduto(ActionEvent e) {
@@ -441,32 +480,30 @@ public class GerenteController extends ElementoFxmlFabrica{
 		LX += 100;
 		
 		//Colocando info do prod a ser editado nos fields
-		TextField nomeTF = (TextField) this.PaneGerente.lookup("#FieldNomeProduto");
+		TextField nomeTF = (TextField) this.PaneEstoque.lookup("#FieldNomeProduto");
 		nomeTF.setText(prod.getNome());
 		
-		TextField marcaTF = (TextField) this.PaneGerente.lookup("#FieldMarcaProduto");
+		TextField marcaTF = (TextField) this.PaneEstoque.lookup("#FieldMarcaProduto");
 		marcaTF.setText(prod.getMarca());
 		
-		TextField codTF = (TextField) this.PaneGerente.lookup("#FieldCodProduto");
+		TextField codTF = (TextField) this.PaneEstoque.lookup("#FieldCodProduto");
 		Double LXCod = codTF.getLayoutX();
 		Double LYCod = codTF.getLayoutY() +5;
-		this.PaneGerente.getChildren().remove(codTF);
+		this.PaneEstoque.getChildren().remove(codTF);
 		Label codLabel = LabelFabrica(
 				prod.getCodBarras(),
 				LXCod, LYCod,
 				12,
 				false
 				);
-		this.PaneGerente.getChildren().add(codLabel);
+		this.PaneEstoque.getChildren().add(codLabel);
 		
-		TextField precoTF = (TextField) this.PaneGerente.lookup("#FieldPrecoProduto");
+		TextField precoTF = (TextField) this.PaneEstoque.lookup("#FieldPrecoProduto");
 		precoTF.setText(String.valueOf(prod.getPreco()));
 		
-		TextField quantidadeTF = (TextField) this.PaneGerente.lookup("#FieldQuantidadeProduto");
+		TextField quantidadeTF = (TextField) this.PaneEstoque.lookup("#FieldQuantidadeProduto");
 		quantidadeTF.setText(String.valueOf(prod.getQuantidade()));
-		
-		ChoiceBox tipoCB = (ChoiceBox) this.PaneGerente.lookup("#ChoiceNomeTipoProduto");
-		tipoCB.setValue(prod.getTipo().getNome());
+
 		
 		Button Editar = ButtonFabrica(
 				"Editar",
@@ -530,20 +567,6 @@ public class GerenteController extends ElementoFxmlFabrica{
 				}
 			}
 			
-			//Tratando Tipo
-			String nomeTipoProd = (String) tipoCB.getValue();
-			if (nomeTipoProd == null) {
-				this.ErroEmNovoEEditarProd(LY);
-				return;
-			}else {
-				Tipo tipoEscolhido = new Tipo();
-				tipoEscolhido.setNome(nomeTipoProd);
-				
-				List<Tipo> tipoBD = this.BOTipo.listarPorCampoEspecifico(tipoEscolhido, "nome");
-				tipoEscolhido = tipoBD.get(0);
-				prodEditado.setTipo(tipoEscolhido);
-			}
-			
 			if (this.prodBO.alterar(prodEditado)) {
 				this.RemoveInfo(true);
 				this.GerarTela(true);
@@ -554,17 +577,17 @@ public class GerenteController extends ElementoFxmlFabrica{
 				LYErro -= 30;
 				
 				Label msgError = LabelFabrica(
-						"Produto já existe no armazém ou a quantidade é decimal para produto unitario",
+						"Produto já existe no armazém",
 						LXErro,
 						LYErro,
 						12,
 						false
 						);
 				msgError.setTextFill(Color.RED);
-				this.PaneGerente.getChildren().add(msgError);
+				this.PaneEstoque.getChildren().add(msgError);
 			}
 		});
-		this.PaneGerente.getChildren().add(Editar);
+		this.PaneEstoque.getChildren().add(Editar);
 	}
 	
 	public void ProdutoNovo() {
@@ -587,7 +610,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 		Adicionar.setOnAction(event->{
 			Produto prod = new Produto();
 			//Tratando Nome do produto
-			TextField nomeTF = (TextField) this.PaneGerente.lookup("#FieldNomeProduto");
+			TextField nomeTF = (TextField) this.PaneEstoque.lookup("#FieldNomeProduto");
 			String nomeProd = nomeTF.getText();
 			if (nomeProd.isBlank()) {
 				this.ErroEmNovoEEditarProd(LY);
@@ -597,7 +620,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 			prod.setNome(nomeProd);
 			
 			//Tratando Marca do Produto
-			TextField marcaTF = (TextField) this.PaneGerente.lookup("#FieldMarcaProduto");
+			TextField marcaTF = (TextField) this.PaneEstoque.lookup("#FieldMarcaProduto");
 			String marcaProd = marcaTF.getText();
 			if (marcaProd.isBlank()) {
 				this.ErroEmNovoEEditarProd(LY);
@@ -607,7 +630,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 			prod.setMarca(marcaProd);
 			
 			//Tratando cod de barras
-			TextField codTF = (TextField) this.PaneGerente.lookup("#FieldCodProduto");
+			TextField codTF = (TextField) this.PaneEstoque.lookup("#FieldCodProduto");
 			String codProd = codTF.getText();
 			if (codProd.isBlank()) {
 				this.ErroEmNovoEEditarProd(LY);
@@ -617,7 +640,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 			prod.setCodBarras(codProd);
 			
 			//Tratando Preço
-			TextField precoTF = (TextField) this.PaneGerente.lookup("#FieldPrecoProduto");
+			TextField precoTF = (TextField) this.PaneEstoque.lookup("#FieldPrecoProduto");
 			String stringPrecoProd = precoTF.getText();
 			if (stringPrecoProd.isBlank()) {
 				this.ErroEmNovoEEditarProd(LY);
@@ -634,7 +657,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 			}
 			
 			//Tratando quantidade
-			TextField quantidadeTF = (TextField) this.PaneGerente.lookup("#FieldQuantidadeProduto");
+			TextField quantidadeTF = (TextField) this.PaneEstoque.lookup("#FieldQuantidadeProduto");
 			String stringQuantidadeProd = quantidadeTF.getText();
 			if (stringQuantidadeProd.isBlank()) {
 				this.ErroEmNovoEEditarProd(LY);
@@ -648,22 +671,6 @@ public class GerenteController extends ElementoFxmlFabrica{
 					return;
 				}
 			}
-			
-			//Tratando Tipo
-			ChoiceBox tipoCB = (ChoiceBox) this.PaneGerente.lookup("#ChoiceNomeTipoProduto");
-			String nomeTipoProd = (String) tipoCB.getValue();
-			if (nomeTipoProd == null) {
-				this.ErroEmNovoEEditarProd(LY);
-				return;
-			}else {
-				Tipo tipoEscolhido = new Tipo();
-				tipoEscolhido.setNome(nomeTipoProd);
-				
-				List<Tipo> tipoBD = this.BOTipo.listarPorCampoEspecifico(tipoEscolhido, "nome");
-				tipoEscolhido = tipoBD.get(0);
-				prod.setTipo(tipoEscolhido);
-			}
-			
 			if (this.prodBO.inserir(prod)) {
 				this.RemoveInfo(true);
 				this.GerarTela(true);
@@ -681,12 +688,12 @@ public class GerenteController extends ElementoFxmlFabrica{
 						false
 						);
 				msgError.setTextFill(Color.RED);
-				this.PaneGerente.getChildren().add(msgError);
+				this.PaneEstoque.getChildren().add(msgError);
 			}
 			
 		}
 		);
-		this.PaneGerente.getChildren().add(Adicionar);
+		this.PaneEstoque.getChildren().add(Adicionar);
 	}
 
 	public void ErroEmNovoEEditarProd( Double LY) {
@@ -700,70 +707,17 @@ public class GerenteController extends ElementoFxmlFabrica{
 				false
 				);
 		msgError.setTextFill(Color.RED);
-		this.PaneGerente.getChildren().add(msgError);
+		this.PaneEstoque.getChildren().add(msgError);
 	}
 	
 	public List<Double> BaseTelaNovoEEditarProduto(String titulo) {
 		this.BaseParaNovaPagina(titulo);
-		List<String> itens = new ArrayList<String>();
-		
-		
-			
+	
 		Double LX = 340.0;
 		Double LY = 192.0;
 		Double DistanciaLabelEField = 75.0;
 		Double DistanciaLabelELabel = 35.0;
 		Double LarguraField = 150.0;
-	
-		Label nomeTipo = LabelFabrica(
-				"Tipo",
-				LX, LY+5,
-				12, 
-				false,
-				70.0
-				);
-		nomeTipo.setAlignment(Pos.CENTER_RIGHT);
-		
-		LX += DistanciaLabelEField;
-		ChoiceBox CBNomeTipo = new ChoiceBox<String>();
-		
-		try {
-			List<Tipo> TodosTipos = BOTipo.listarTodos();
-			
-			for(int x=0;x<TodosTipos.size();x++) itens.add(TodosTipos.get(x).getNome());
-			
-			CBNomeTipo = ChoiceBoxFabrica(
-					"ChoiceNomeTipoProduto",
-					LX,
-					LY,
-					LarguraField,
-					itens
-					);
-		}catch (Exception e){
-			CBNomeTipo = ChoiceBoxFabrica(
-					"ChoiceNomeTipoProduto",
-					LX,
-					LY,
-					LarguraField
-					);
-		}
-		 
-		
-		Button NovoTipo = ButtonFabrica(
-				"+",
-				"NovoTipoEmProduto",
-				LX + 150, LY,
-				12,
-				10.0);
-		NovoTipo.setOnAction(event->{
-			this.NovoTipo();
-		});
-		
-		LX -= DistanciaLabelEField;
-		LY += DistanciaLabelELabel;
-		
-		this.PaneGerente.getChildren().addAll(
-				nomeTipo, CBNomeTipo, NovoTipo);
 		
 		List<String> LabelNome = new ArrayList<String>();
 		LabelNome.add("Nome");
@@ -797,7 +751,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 					13.0,
 					LX,LY
 					);
-			this.PaneGerente.getChildren().addAll(lb, tf);
+			this.PaneEstoque.getChildren().addAll(lb, tf);
 			
 			LX -= DistanciaLabelEField;
 			LY += DistanciaLabelELabel;
@@ -821,7 +775,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 		LXLY.add(LX);
 		LXLY.add(LY);
 		
-		this.PaneGerente.getChildren().add(Voltar);
+		this.PaneEstoque.getChildren().add(Voltar);
 		
 		return LXLY;
 		
@@ -856,428 +810,11 @@ public class GerenteController extends ElementoFxmlFabrica{
 		this.GerarTela(false);
 	}
 
-	public void GerenciarTipo() {
-
-		this.BaseParaNovaPagina("Gerenciar Tipos");
-		
-		List<Tipo> TodosTipos = BOTipo.listarTodos();
-		
-		List<String> itens = new ArrayList<String>();
-		
-		for(int x=0;x<TodosTipos.size();x++) itens.add(TodosTipos.get(x).getNome());
-			
-		Double LX = 380.0;
-		Double LY = 192.0;
-	
-		Label nomeTipo = LabelFabrica(
-				"Nome",
-				LX, LY,
-				12, 
-				false
-				);
-		LX += 50;
-		ChoiceBox CBNome = ChoiceBoxFabrica(
-				"ChoiceNomeTipo",
-				LX,
-				LY,
-				150.0,
-				itens
-				);
-
-		Double TamanhoBotao = 70.0;
-		LY += 100;
-		
-		Button NovoTipo = ButtonFabrica(
-				"Novo",
-				"BotaoNovoTipo",
-				LX,
-				LY,
-				12,
-				TamanhoBotao,
-				"#06FF6A"
-				);
-		NovoTipo.setOnAction(event -> this.NovoTipo());
-		
-		Double DiferencaEntreBotoes = 30.0;
-		
-		LY += DiferencaEntreBotoes;
-		
-		Button EditarTipo = ButtonFabrica(
-				"Editar",
-				"BotaoEditarTipo",
-				LX,
-				LY,
-				12,
-				TamanhoBotao
-				);
-		EditarTipo.setOnAction(event -> this.EditarTipo());
-		
-		LY += DiferencaEntreBotoes;
-		
-		Button DeletarTipo = ButtonFabrica(
-				"Deletar",
-				"BotaoDeletarTipo",
-				LX,
-				LY,
-				12,
-				TamanhoBotao,
-				"#cc1515"
-				);
-		DeletarTipo.setOnAction(event -> this.DeletarTipo());
-		
-		LY += DiferencaEntreBotoes;
-		
-		Button Voltar = ButtonFabrica(
-				"Voltar",
-				"BotaoVoltarTipo",
-				LX,
-				LY,
-				12,
-				TamanhoBotao
-				);
-		Voltar.setOnAction(event -> {
-			this.RemoveInfo(false);
-		});
-		
-		this.PaneGerente.getChildren().addAll(
-				nomeTipo, 
-				CBNome, 
-				NovoTipo,
-				EditarTipo,
-				DeletarTipo,
-				Voltar
-				);
-	}
-	
-	private void NovoTipo() {
-		this.BaseTelaNovoEEditarTipo("Novo Tipo");
-		
-		Double TamanhoButton = 70.0;
-		Double LX = 450.0;
-		Double LY = 300.0;
-		
-		Button adicionar = ButtonFabrica(
-				"Adicionar",
-				"AdicionarTipo",
-				LX,
-				LY,
-				12,
-				TamanhoButton,
-				"#06FF6A"
-				);
-		adicionar.setOnAction(event->{
-			Tipo tipo = new Tipo();
-			
-			TextField EscolhaNome = (TextField) this.PaneGerente.lookup("#EscolhaNomeTipo");
-			ChoiceBox CBForma = (ChoiceBox) this.PaneGerente.lookup("#ChoiceForma");
-			
-			String CampoNome = EscolhaNome.getText();
-			String FormaCompra = (String) CBForma.getValue();
-			
-			if (CampoNome == "" || FormaCompra == null) {
-				Label msgErro = LabelFabrica(
-						"Algum item errado",
-						430.0,
-						250.0,
-						12,
-						false
-						);
-				msgErro.setTextFill(Color.RED);
-				this.PaneGerente.getChildren().add(msgErro);
-			}else {
-				tipo.setNome(CampoNome);
-				switch (FormaCompra) {
-					case "Quilo": 
-						tipo.setFormaDeVenda("q");
-						break;
-					case "Unidade":
-						tipo.setFormaDeVenda("u");
-						break;
-					default:
-						throw new IllegalArgumentException("Unexpected value: " + CampoNome);
-				}
-				
-				if (this.BOTipo.inserir(tipo)) {
-					this.RemoveInfo(false);
-				}else {
-					Label msgErro = LabelFabrica(
-							"Item já existe no armazém ou a quantidade é decimal para produto unitario",
-							430.0,
-							280.0,
-							12,
-							false
-							);
-					msgErro.setTextFill(Color.RED);
-					this.PaneGerente.getChildren().add(msgErro);
-				}
-			}
-		});
-		
-		this.PaneGerente.getChildren().add(adicionar);
-	}
-	
-	private void EditarTipo() {
-		ChoiceBox CB = (ChoiceBox) this.PaneGerente.lookup("#ChoiceNomeTipo");
-		String nomeTipo = (String) CB.getValue();
-		
-		if (nomeTipo == null) {
-			Label msgErro = LabelFabrica(
-					"Escolha um Tipo",
-					430.0,
-					250.0,
-					12,
-					false
-					);
-			msgErro.setTextFill(Color.RED);
-			this.PaneGerente.getChildren().add(msgErro);
-		}else {
-			
-			this.BaseTelaNovoEEditarTipo("Editar Tipo");
-			
-			Tipo tipoOriginal = new Tipo();
-			tipoOriginal.setNome(nomeTipo);
-			
-			List<Tipo> listTipoOriginal= BOTipo.listarPorCampoEspecifico(tipoOriginal, "nome");
-			Tipo tipoRecebido = listTipoOriginal.get(0);
-			tipoOriginal.setNome(tipoRecebido.getNome());
-			tipoOriginal.setId(tipoRecebido.getId());
-			tipoOriginal.setFormaDeVenda(tipoRecebido.getFormaDeVenda());
-			
-			TextField EscolhaNome = (TextField) this.PaneGerente.lookup("#EscolhaNomeTipo");
-			EscolhaNome.setText(nomeTipo);
-			
-			String item;
-			
-			switch (tipoOriginal.getFormaDeVenda()) {
-				case "q": 
-					item = "Quilo";
-					break;
-				case "u":
-					item = "Unidade";
-					break;
-				default:
-					throw new IllegalArgumentException("Unexpected value: " + tipoOriginal.getFormaDeVenda());
-		}
-			
-			ChoiceBox CBForma = (ChoiceBox) this.PaneGerente.lookup("#ChoiceForma");
-			
-			CBForma.setValue(item);
-			
-			Double TamanhoButton = 70.0;
-			Double LX = 450.0;
-			Double LY = 300.0;
-			
-			Button editar = ButtonFabrica(
-					"Editar",
-					"EditarTipo",
-					LX,
-					LY,
-					12,
-					TamanhoButton,
-					"#06FF6A"
-					);
-			editar.setOnAction(event->{
-
-				Tipo tipo = new Tipo();
-				
-				String CampoNome = EscolhaNome.getText();
-				String FormaCompra = (String) CBForma.getValue();
-				
-				if (CampoNome == "" || FormaCompra == null) {
-					Label msgErro = LabelFabrica(
-							"Algum item errado",
-							430.0,
-							250.0,
-							12,
-							false
-							);
-					msgErro.setTextFill(Color.RED);
-					this.PaneGerente.getChildren().add(msgErro);
-				}else {
-					tipo.setNome(CampoNome);
-					
-					switch (FormaCompra) {
-						case "Quilo": 
-							tipo.setFormaDeVenda("q");
-							break;
-						case "Unidade":
-							tipo.setFormaDeVenda("u");
-							break;
-						default:
-							throw new IllegalArgumentException("Unexpected value: " + CampoNome);
-					}
-					tipo.setId(tipoOriginal.getId());
-					
-					if (BOTipo.alterar(tipo)) {
-						this.RemoveInfo(true);
-						this.GerarTela(true);
-					}else {
-						Label msgErro = LabelFabrica(
-								"Erro",
-								430.0,
-								280.0,
-								12,
-								false
-								);
-						msgErro.setTextFill(Color.RED);
-						this.PaneGerente.getChildren().add(msgErro);
-					}
-				}
-			});
-		
-			this.PaneGerente.getChildren().add(editar);		
-	}
-		
-	}
-	
-	private void BaseTelaNovoEEditarTipo(String titulo) {
-			this.BaseParaNovaPagina(titulo);
-			
-			Double LX = 400.0;
-			Double LY = 192.0;
-			
-			Double DistanciaLabelField = 50.0;
-			Double DistanciaEntreOBJ = 30.0;
-			
-			Label nome = LabelFabrica(
-					"Nome",
-					LX, LY,
-					12, 
-					false
-					);
-			
-			LX += DistanciaLabelField;
-			
-			TextField EscolhaNome = TextFieldFabrica(
-					"EscolhaNomeTipo",
-					150.0,
-					15.0,
-					LX, LY
-					);
-			
-			LX -= DistanciaLabelField;
-			LY += DistanciaEntreOBJ;
-			
-			Label forma = LabelFabrica(
-					"Forma",
-					LX, LY,
-					12, 
-					false
-					);
-			
-			LX += DistanciaLabelField;
-			
-			List<String> itens = new ArrayList<String>();
-			itens.add("Quilo");
-			itens.add("Unidade");
-			
-			ChoiceBox CBForma = ChoiceBoxFabrica(
-					"ChoiceForma",
-					LX,
-					LY,
-					150.0,
-					itens
-					);
-			
-			LY += 80;
-			
-			Double TamanhoButton = 70.0;
-			
-			LY += DistanciaEntreOBJ;
-			
-			Button voltar = ButtonFabrica(
-					"Voltar",
-					"VoltarTipo",
-					LX,
-					LY,
-					12,
-					TamanhoButton
-					);
-			voltar.setOnAction(event ->{
-				this.RemoveInfo(true);
-				this.GerarTela(false);
-			});
-				
-			this.PaneGerente.getChildren().addAll(
-					nome, EscolhaNome,
-					forma, CBForma,
-					voltar
-					);
-			
-	}
-	
-	private void DeletarTipo() {
-		ChoiceBox<String> CB = (ChoiceBox) this.PaneGerente.lookup("#ChoiceNomeTipo");
-		String nomeTipo = (String) CB.getValue();
-		
-		if (nomeTipo == null) {
-			Label msgErro = LabelFabrica(
-					"Escolha um Tipo",
-					430.0,
-					250.0,
-					12,
-					false
-					);
-			msgErro.setTextFill(Color.RED);
-			this.PaneGerente.getChildren().add(msgErro);
-		}else {
-			this.BaseParaNovaPagina("Voce quer mesmo deletar " + nomeTipo + "?");
-			
-			Double LX = 380.0;
-			Double LY = 200.0;
-			Double TamanhoButton = 80.0;
-			
-			Button voltar = ButtonFabrica(
-					"Voltar",
-					"VoltarTipo",
-					LX,
-					LY,
-					12,
-					TamanhoButton
-					);
-			voltar.setOnAction(event ->{
-				this.RemoveInfo(false);
-			});
-			
-			LX += 90;		
-			Button deletar = ButtonFabrica(
-					"Deletar",
-					"DeletarTipo",
-					LX,
-					LY,
-					12,
-					TamanhoButton,
-					"#cc1515"
-					);
-			deletar.setOnAction(event->{
-				Tipo tipo = new Tipo();
-				tipo.setNome(nomeTipo);
-				if (this.BOTipo.deletar(tipo)) {
-					this.RemoveInfo(true);
-					this.GerarTela(true);
-				}else {
-					Label msgErro = LabelFabrica(
-							"Esse tipo está associado com algum Produto",
-							360.0,
-							180.0,
-							12,
-							false
-							);
-					msgErro.setTextFill(Color.RED);
-					this.PaneGerente.getChildren().add(msgErro);
-				}
-			});
-			
-			this.PaneGerente.getChildren().addAll(deletar, voltar);
-			
-		}
-	}
-	
   	private void BaseParaNovaPagina(String titulo) {
 		ImageView IV = ImageFabrica(
-						659.0,
-						321.0,
-						150.0,
+						525.0,
+						325.0,
+						220.0,
 						150.0,
 						"view/ve/RectanglePrincipal.png"
 						);
@@ -1292,6 +829,6 @@ public class GerenteController extends ElementoFxmlFabrica{
 					);
 		
 		
-		this.PaneGerente.getChildren().addAll(IV, t);
+		this.PaneEstoque.getChildren().addAll(IV, t);
 	}
 }

@@ -83,14 +83,14 @@ public class ElementoFxmlFabrica implements InterFabrica{
 	}
 
 	@Override
-	public ChoiceBox ChoiceBoxFabrica(String id, Double LayX, Double LayY, Double Largura, List<String> ListaValores) {
+	public ChoiceBox<String> ChoiceBoxFabrica(String id, Double LayX, Double LayY, Double Largura, List<String> ListaValores) {
 		ChoiceBox<String> CB = ChoiceBoxFabrica(id, LayX, LayY, Largura);
 		CB.setItems(FXCollections.observableArrayList(ListaValores));
 		return CB;
 	}
 
 	@Override
-	public ChoiceBox ChoiceBoxFabrica(String id, Double LayX, Double LayY, Double Largura) {
+	public ChoiceBox<String> ChoiceBoxFabrica(String id, Double LayX, Double LayY, Double Largura) {
 		ChoiceBox<String> CB = new ChoiceBox<String>();
 		CB.setId(id);
 		CB.setLayoutX(LayX);

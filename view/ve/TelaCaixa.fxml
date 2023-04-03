@@ -8,7 +8,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane fx:id="PaneFuncionario" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FuncionarioController">
+<Pane fx:id="PaneCaixa" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CaixaController">
    <children>
       <ImageView fitHeight="73.0" fitWidth="961.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -16,7 +16,7 @@
          </image>
       </ImageView>
       <Label fx:id="nomeUsuario" layoutX="70.0" layoutY="21.0" prefHeight="23.0" prefWidth="167.0" text="nomeFuncionaro" textFill="WHITE" />
-      <Button fx:id="botaoSair" layoutX="887.0" layoutY="20.0" mnemonicParsing="false" onAction="#LogOut" style="-fx-background-color: #13ABC4;" text="Sair" textFill="WHITE" />
+      <Button fx:id="botaoSair" layoutX="887.0" layoutY="20.0" mnemonicParsing="false" onAction="#LogOut" style="-fx-background-color: #13ABC4;" text="Menu" textFill="WHITE" />
       <ImageView fitHeight="458.0" fitWidth="873.0" layoutX="80.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@RectanglePrincipal.png" />
@@ -66,6 +66,5 @@
       <Button layoutX="810.0" layoutY="205.0" mnemonicParsing="false" onAction="#ScrollBaixo" prefWidth="26.0" text="V" />
       <Label layoutX="607.0" layoutY="135.0" text="-" />
       <Label layoutX="653.0" layoutY="155.0" text="=" />
-      <Button layoutX="343.0" layoutY="93.0" mnemonicParsing="false" onAction="#pesquisar" prefHeight="41.0" prefWidth="85.0" text="Pesquisar" />
    </children>
 </Pane>
