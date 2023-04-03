@@ -1,6 +1,8 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -27,6 +29,8 @@ public class GerenteController extends ElementoFxmlFabrica{
 	@FXML private TextField Pesquisa;
 	@FXML private ChoiceBox<String> EscolhaPesquisa;
 	@FXML private Button pagina1;
+	@FXML private Button BotaoQuantidade;
+	@FXML private Button BotaoPreco;
 	
 	public static String staticNome;
 	
@@ -38,6 +42,9 @@ public class GerenteController extends ElementoFxmlFabrica{
 	
 	private ProdutoBO prodBO = new ProdutoBO();
 	private TipoBO BOTipo = new TipoBO();
+	
+	private boolean ordenarQuantidadeMenorParaMaior = true;
+	private boolean ordenarPrecoMenorParaMaior = true;
 	
 	public void initialize() {
 		nomeUsuario.setText(staticNome);
@@ -51,6 +58,52 @@ public class GerenteController extends ElementoFxmlFabrica{
 				"Cod. Barras", 
 				"Marca"));
 		
+	}
+	
+	public void OrdenarQuantidade() {
+		if(this.ordenarQuantidadeMenorParaMaior) {
+			Collections.sort(this.ListaProdutos, Comparator.comparingDouble(Produto ::getQuantidade));
+			
+			this.RemoveInfo(true);
+			this.ColocarInfoNaTela();
+			
+			this.BotaoPreco.setStyle("-fx-border-color:#FFF; -fx-background-color: #5BD0E3;");
+			this.ordenarPrecoMenorParaMaior = true;
+			
+			this.BotaoQuantidade.setStyle("-fx-border-color:#FFD966; -fx-background-color: #5BD0E3;");
+			this.ordenarQuantidadeMenorParaMaior = false;
+		}else {
+			Collections.reverse(this.ListaProdutos);
+			
+			this.RemoveInfo(true);
+			this.ColocarInfoNaTela();
+			
+			this.BotaoQuantidade.setStyle("-fx-border-color:#655DBB; -fx-background-color: #5BD0E3;");
+			this.ordenarQuantidadeMenorParaMaior = true;
+		}
+	}
+	
+	public void OrdenarPreco() {
+		if(this.ordenarPrecoMenorParaMaior) {
+			Collections.sort(this.ListaProdutos, Comparator.comparingDouble(Produto ::getPreco));
+			
+			this.RemoveInfo(true);
+			this.ColocarInfoNaTela();
+			
+			this.BotaoQuantidade.setStyle("-fx-border-color:#FFF; -fx-background-color: #5BD0E3;");
+			this.ordenarQuantidadeMenorParaMaior = true;
+			
+			this.BotaoPreco.setStyle("-fx-border-color:#FFD966; -fx-background-color: #5BD0E3;");
+			this.ordenarPrecoMenorParaMaior = false;
+		}else {
+			Collections.reverse(this.ListaProdutos);
+			
+			this.RemoveInfo(true);
+			this.ColocarInfoNaTela();
+			
+			this.BotaoPreco.setStyle("-fx-border-color:#655DBB; -fx-background-color: #5BD0E3;");
+			this.ordenarPrecoMenorParaMaior = true;
+		}
 	}
 	
 	private void RemoveInfo(boolean tudo) {
@@ -138,7 +191,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 			
 			LayX += distanciaEntreElementos;
 			
-			Label tipo = LabelFabrica(
+			/*Label tipo = LabelFabrica(
 					prod.getTipo().getNome(), 
 					LayX, 
 					LayY, 
@@ -147,7 +200,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 					LarguraLabel
 					);
 			
-			LayX += distanciaEntreElementos;
+			LayX += distanciaEntreElementos;*/
 			
 			Label preco = LabelFabrica(
 					String.valueOf(prod.getPreco()), 
@@ -188,7 +241,6 @@ public class GerenteController extends ElementoFxmlFabrica{
 					cod,
 					marca,
 					quant,
-					tipo,
 					preco,
 					dele,
 					edit
@@ -465,8 +517,8 @@ public class GerenteController extends ElementoFxmlFabrica{
 		TextField quantidadeTF = (TextField) this.PaneGerente.lookup("#FieldQuantidadeProduto");
 		quantidadeTF.setText(String.valueOf(prod.getQuantidade()));
 		
-		ChoiceBox tipoCB = (ChoiceBox) this.PaneGerente.lookup("#ChoiceNomeTipoProduto");
-		tipoCB.setValue(prod.getTipo().getNome());
+		/*ChoiceBox tipoCB = (ChoiceBox) this.PaneGerente.lookup("#ChoiceNomeTipoProduto");
+		tipoCB.setValue(prod.getTipo().getNome());*/
 		
 		Button Editar = ButtonFabrica(
 				"Editar",
@@ -531,7 +583,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 			}
 			
 			//Tratando Tipo
-			String nomeTipoProd = (String) tipoCB.getValue();
+			/*String nomeTipoProd = (String) tipoCB.getValue();
 			if (nomeTipoProd == null) {
 				this.ErroEmNovoEEditarProd(LY);
 				return;
@@ -542,7 +594,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 				List<Tipo> tipoBD = this.BOTipo.listarPorCampoEspecifico(tipoEscolhido, "nome");
 				tipoEscolhido = tipoBD.get(0);
 				prodEditado.setTipo(tipoEscolhido);
-			}
+			}*/
 			
 			if (this.prodBO.alterar(prodEditado)) {
 				this.RemoveInfo(true);
@@ -554,7 +606,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 				LYErro -= 30;
 				
 				Label msgError = LabelFabrica(
-						"Produto já existe no armazém ou a quantidade é decimal para produto unitario",
+						"Produto já existe no armazém",
 						LXErro,
 						LYErro,
 						12,
@@ -650,7 +702,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 			}
 			
 			//Tratando Tipo
-			ChoiceBox tipoCB = (ChoiceBox) this.PaneGerente.lookup("#ChoiceNomeTipoProduto");
+			/*ChoiceBox tipoCB = (ChoiceBox) this.PaneGerente.lookup("#ChoiceNomeTipoProduto");
 			String nomeTipoProd = (String) tipoCB.getValue();
 			if (nomeTipoProd == null) {
 				this.ErroEmNovoEEditarProd(LY);
@@ -662,7 +714,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 				List<Tipo> tipoBD = this.BOTipo.listarPorCampoEspecifico(tipoEscolhido, "nome");
 				tipoEscolhido = tipoBD.get(0);
 				prod.setTipo(tipoEscolhido);
-			}
+			}*/
 			
 			if (this.prodBO.inserir(prod)) {
 				this.RemoveInfo(true);
@@ -706,15 +758,13 @@ public class GerenteController extends ElementoFxmlFabrica{
 	public List<Double> BaseTelaNovoEEditarProduto(String titulo) {
 		this.BaseParaNovaPagina(titulo);
 		List<String> itens = new ArrayList<String>();
-		
-		
-			
+	
 		Double LX = 340.0;
 		Double LY = 192.0;
 		Double DistanciaLabelEField = 75.0;
 		Double DistanciaLabelELabel = 35.0;
 		Double LarguraField = 150.0;
-	
+		/*
 		Label nomeTipo = LabelFabrica(
 				"Tipo",
 				LX, LY+5,
@@ -764,7 +814,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 		
 		this.PaneGerente.getChildren().addAll(
 				nomeTipo, CBNomeTipo, NovoTipo);
-		
+		*/
 		List<String> LabelNome = new ArrayList<String>();
 		LabelNome.add("Nome");
 		LabelNome.add("Marca");
@@ -856,6 +906,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 		this.GerarTela(false);
 	}
 
+	/*
 	public void GerenciarTipo() {
 
 		this.BaseParaNovaPagina("Gerenciar Tipos");
@@ -1272,12 +1323,12 @@ public class GerenteController extends ElementoFxmlFabrica{
 			
 		}
 	}
-	
+	*/
   	private void BaseParaNovaPagina(String titulo) {
 		ImageView IV = ImageFabrica(
-						659.0,
-						321.0,
-						150.0,
+						525.0,
+						325.0,
+						220.0,
 						150.0,
 						"view/ve/RectanglePrincipal.png"
 						);

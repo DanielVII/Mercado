@@ -4,23 +4,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import model.Service.UsuarioBO;
-import model.entity.Funcionario;
-import model.entity.Gerente;
-import model.entity.Usuario;
 import view.Telas;
 import controller.GerenteController;
 
 public class FrontController {
-	@FXML private TextField email;
-	@FXML private TextField senha;
-	@FXML private Label erroAutenticacao;
-	@FXML private Label facaLogin;
-	private static UsuarioBO userBo = new UsuarioBO();
-
-
 	
-	public void Auntenticar(ActionEvent event) throws Exception{
+
+	public void GoCaixa(ActionEvent event) throws Exception{
+		Telas.telaFuncionario();
+	}
+	public void GoEstoque(ActionEvent event) throws Exception{
+		Telas.telaGerente();
+	}
+	
+	/*public void Auntenticar(ActionEvent event) throws Exception{
 		Usuario user = new Usuario();
 		user.setEmail(email.getText());
 		user.setSenha(senha.getText());
@@ -38,7 +35,7 @@ public class FrontController {
 			}
 			else erroAutenticacao.setVisible(true);
 		}
-	}
+	}*/
 	
 	
 	

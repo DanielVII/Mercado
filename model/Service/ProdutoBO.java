@@ -39,11 +39,6 @@ public class ProdutoBO implements BaseInterBO<Produto>{
 	
 	public boolean inserir (Produto produto){
 		if (this.NaoExisteNoBD(produto)) {
-			Tipo tipo = tipoDAO.encontrarPorId(produto.getTipo().getId());
-			if (tipo.getFormaDeVenda().equals("u")) {
-				int quantInt =  produto.getQuantidade().intValue(); 
-				if (produto.getQuantidade() - quantInt > 0) return false;
-			}
 			if (dao.inserir(produto) == true) return true;
 			else return false;
 		}else return false;
@@ -59,11 +54,6 @@ public class ProdutoBO implements BaseInterBO<Produto>{
 	
 	public boolean alterar (Produto produto){
 		if (this.ExisteNoBD(produto)) {
-			Tipo tipo = tipoDAO.encontrarPorId(produto.getTipo().getId());
-			if (tipo.getFormaDeVenda().equals("u")) {
-				int quantInt =  produto.getQuantidade().intValue(); 
-				if (produto.getQuantidade() - quantInt > 0) return false;
-			}
 			if (dao.alterar(produto))return true;
 			else return false;
 		}else return false;
@@ -81,13 +71,7 @@ public class ProdutoBO implements BaseInterBO<Produto>{
 				produtoLista.setQuantidade(rs.getDouble("quantidade"));
 				produtoLista.setPreco(rs.getDouble("preco"));
 				
-				int idTipo = rs.getInt("id_tipo");
-				Tipo tipo = new Tipo();
-				TipoBO bo = new TipoBO();
-				
-				tipo = bo.BuscarTodaInfoSoComId(idTipo);
-				
-				produtoLista.setTipo(tipo);
+
 				Produtos.add(produtoLista);
 			}
 			return Produtos;
@@ -109,14 +93,7 @@ public class ProdutoBO implements BaseInterBO<Produto>{
 				produtoLista.setCodBarras(rs.getString("cod_de_barras"));
 				produtoLista.setQuantidade(rs.getDouble("quantidade"));
 				produtoLista.setPreco(rs.getDouble("preco"));
-				
-				int idTipo = rs.getInt("id_tipo");
-				Tipo tipo = new Tipo();
-				TipoBO bo = new TipoBO();
-				
-				tipo = bo.BuscarTodaInfoSoComId(idTipo);
-				
-				produtoLista.setTipo(tipo);
+
 				Produtos.add(produtoLista);
 			}
 			return Produtos;
@@ -138,14 +115,7 @@ public class ProdutoBO implements BaseInterBO<Produto>{
 				produtoLista.setCodBarras(rs.getString("cod_de_barras"));
 				produtoLista.setQuantidade(rs.getDouble("quantidade"));
 				produtoLista.setPreco(rs.getDouble("preco"));
-				
-				int idTipo = rs.getInt("id_tipo");
-				Tipo tipo = new Tipo();
-				TipoBO bo = new TipoBO();
-				
-				tipo = bo.BuscarTodaInfoSoComId(idTipo);
-				
-				produtoLista.setTipo(tipo);
+
 				Produtos.add(produtoLista);
 			}
 			return Produtos;

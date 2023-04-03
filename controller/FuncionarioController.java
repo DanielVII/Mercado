@@ -288,23 +288,7 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 			this.PaneFuncionario.getChildren().add(msgErro);
 			return false;}
 		
-		produto.setTipo(this.tipoBO.BuscarTodaInfoSoComId(produto.getTipo().getId()));
-		if (produto.getTipo().getFormaDeVenda().equals("u")) {
-			int quantInt = quantEscolhido.intValue();
-			if(quantEscolhido - quantInt > 0) {
-				Label msgErro = LabelFabrica(
-						"Quantidade Escolhida é decimal, o produto é unitario",
-						100.0,
-						340.0,
-						12,
-						false
-						);
-				msgErro.setTextFill(Color.RED);
-				msgErro.setId("erro3");
-				this.PaneFuncionario.getChildren().add(msgErro);
-				return false;
-			}
-		}
+
 		
 		List<Produto> listProd = this.produtoBO.listarPorCampoEspecifico(produto, "cod_de_barras");//Isso é necessario pois o produto fornecido em alguns contextos terão a quantidade existente na comanda, n no bd
 		Produto novoProd = listProd.get(0);

@@ -3,7 +3,6 @@ package model.entity;
 public class Produto {
     private String nome, marca, codDeBarras;
     private Double preco, quantidade;
-    private Tipo tipo;
 
     /*Se espera aqui que seja escolhido anteriormente um produto por meio da pesquisa do site
      * e então seja chamada essa função, a qual vai receber o valor preço do produto em 
@@ -58,13 +57,5 @@ public class Produto {
     	if(quantidade>=0) this.quantidade = quantidade;
     }
     
-    public Tipo getTipo(){
-        return this.tipo;
-    }
 
-    public void setTipo(Tipo tipo){
-        if (tipo != null) {
-        	this.tipo = tipo;        	
-        }
-    }
 }

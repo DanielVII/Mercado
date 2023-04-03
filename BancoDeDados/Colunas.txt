@@ -17,5 +17,4 @@ CREATE TABLE produtos(
     marca VARCHAR(100) NOT NULL,
     cod_de_barras VARCHAR(13) NOT NULL UNIQUE,
     quantidade DOUBLE PRECISION NOT NULL,
-    preco DOUBLE PRECISION NOT NULL,
-    id_tipo int REFERENCES tipos(id_tipo));
+    preco DOUBLE PRECISION NOT NULL);

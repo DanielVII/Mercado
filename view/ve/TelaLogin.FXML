@@ -18,14 +18,8 @@
             <Image url="@logo.png" />
          </image>
       </ImageView>
-      <TextField fx:id="email" layoutX="380.0" layoutY="210.0" prefHeight="32.0" prefWidth="203.0" promptText="Email" />
-      <Label fx:id="facaLogin" layoutX="410.0" layoutY="160.0" prefHeight="43.0" prefWidth="143.0" text="Faça seu login">
-         <font>
-            <Font size="22.0" />
-         </font>
-      </Label>
-      <Button fx:id="BotaoLogin" layoutX="455.0" layoutY="306.0" mnemonicParsing="false" onAction="#Auntenticar" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #f1f1f1;" text="Entrar" />
+      <Button fx:id="BotaoCaixa" layoutX="455.0" layoutY="306.0" mnemonicParsing="false" onAction="#GoCaixa" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #f1f1f1;" text="Caixa" />
       <Label fx:id="erroAutenticacao" layoutX="400.0" layoutY="285.0" text="Alguma credencial está errada" textFill="#fc7171" visible="false" />
-      <PasswordField fx:id="senha" layoutX="380.0" layoutY="250.0" prefHeight="32.0" prefWidth="203.0" promptText="Senha" />
+      <Button fx:id="BotaoEstoque" layoutX="455.0" layoutY="263.0" mnemonicParsing="false" onAction="#GoEstoque" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #f1f1f1;" text="Estoque" />
    </children>
 </Pane>
