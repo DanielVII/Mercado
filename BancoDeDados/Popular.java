@@ -2,9 +2,6 @@ package BancoDeDados;
 
 import model.entity.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import model.Service.*;
 
 public class Popular {

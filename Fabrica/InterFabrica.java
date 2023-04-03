@@ -57,7 +57,7 @@ public interface InterFabrica {
 			Double LayY,
 			String CaminhoImg);
 	
-	public ChoiceBox ChoiceBoxFabrica(
+	public ChoiceBox<String> ChoiceBoxFabrica(
 			String id,
 			Double LayX,
 			Double LayY,
@@ -65,7 +65,7 @@ public interface InterFabrica {
 			List<String> ListaValores
 			);
 	
-	public ChoiceBox ChoiceBoxFabrica(
+	public ChoiceBox<String> ChoiceBoxFabrica(
 			String id,
 			Double LayX,
 			Double LayY,
