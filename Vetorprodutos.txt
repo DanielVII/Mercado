@@ -1,0 +1,8 @@
+Vetor:produtos
+arquivo: converter o BD em arquivo csv X
+Generic: BaseInterDAO
+Pilha: tela De pratileira X
+fila: Fila de clientes X
+Lista encadeada: ??? X
+BUsca Binaria: tela armazen X
+Ordenação: tela armazen

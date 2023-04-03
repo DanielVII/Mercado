@@ -13,7 +13,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import view.Telas;
 import model.Service.ProdutoBO;
-import model.Service.TipoBO;
 import model.entity.Produto;
 
 import java.math.RoundingMode;
@@ -41,7 +40,6 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 	
 	public static String staticNome;
 	private static ProdutoBO produtoBO = new ProdutoBO();
-	private static TipoBO tipoBO = new TipoBO();
 
 	private int scroll = 0; // sempre será menor igual a zero
 	private int tamanhoAntesDeItensNaComanda;

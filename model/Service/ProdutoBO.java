@@ -6,14 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.entity.Produto;
-import model.entity.Tipo;
 import model.DAO.BaseInterDAO;
 import model.DAO.ProdutoDAO;
-import model.DAO.TipoDAO;
 
 public class ProdutoBO implements BaseInterBO<Produto>{
 	ProdutoDAO dao = new ProdutoDAO();
-	TipoDAO tipoDAO = new TipoDAO();
 	
 	private boolean ExisteNoBD(Produto produto) {
 		ResultSet existe = dao.encontrarPorCampoEspecifico(produto, "cod_de_barras");

@@ -18,8 +18,9 @@
             <Image url="@logo.png" />
          </image>
       </ImageView>
-      <Button fx:id="BotaoCaixa" layoutX="455.0" layoutY="306.0" mnemonicParsing="false" onAction="#GoCaixa" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #f1f1f1;" text="Caixa" />
+      <Button fx:id="BotaoCaixa" layoutX="400.0" layoutY="246.0" mnemonicParsing="false" onAction="#GoCaixa" prefHeight="17.0" prefWidth="160.0" style="-fx-background-color: #f1f1f1;" text="Caixa" />
       <Label fx:id="erroAutenticacao" layoutX="400.0" layoutY="285.0" text="Alguma credencial está errada" textFill="#fc7171" visible="false" />
-      <Button fx:id="BotaoEstoque" layoutX="455.0" layoutY="263.0" mnemonicParsing="false" onAction="#GoEstoque" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #f1f1f1;" text="Estoque" />
+      <Button fx:id="BotaoEstoque" layoutX="400.0" layoutY="203.0" mnemonicParsing="false" onAction="#GoEstoque" prefHeight="17.0" prefWidth="160.0" style="-fx-background-color: #f1f1f1;" text="Estoque" />
+      <Button fx:id="BotaoCompras" layoutX="400.0" layoutY="289.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="160.0" style="-fx-background-color: #f1f1f1;" text="Compras" />
    </children>
 </Pane>

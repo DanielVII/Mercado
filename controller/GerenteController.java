@@ -18,9 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import view.Telas;
 import model.Service.ProdutoBO;
-import model.Service.TipoBO;
 import model.entity.Produto;
-import model.entity.Tipo;
 import Fabrica.ElementoFxmlFabrica;
 
 public class GerenteController extends ElementoFxmlFabrica{
@@ -41,7 +39,6 @@ public class GerenteController extends ElementoFxmlFabrica{
 	private int quantItensListados;
 	
 	private ProdutoBO prodBO = new ProdutoBO();
-	private TipoBO BOTipo = new TipoBO();
 	
 	private boolean ordenarQuantidadeMenorParaMaior = true;
 	private boolean ordenarPrecoMenorParaMaior = true;

@@ -9,15 +9,6 @@ import model.Service.*;
 
 public class Popular {
 	private ProdutoBO prodBO = new ProdutoBO();
-	private TipoBO tipBO = new TipoBO();
-	
-	public void CriarTipos(String nome, String forma_de_venda) {
-		Tipo tipo = new Tipo();
-		tipo.setNome(nome);
-		tipo.setFormaDeVenda(forma_de_venda);
-		
-		this.tipBO.inserir(tipo);
-	}
 
 	public void CriarProduto(String nome, String marca, String cod_de_barras, double quantidade, double preco) {
 		Produto prod = new Produto();
@@ -27,7 +18,6 @@ public class Popular {
 		prod.setQuantidade(quantidade);
 		prod.setPreco(preco);
 		
-		ProdutoBO produto = new ProdutoBO();
 		this.prodBO.inserir(prod);
 	}
 	public static void main(String[] args) {

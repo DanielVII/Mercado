@@ -1,7 +1,6 @@
 package model.DAO;
 
 import model.entity.Produto;
-import model.entity.Tipo;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
