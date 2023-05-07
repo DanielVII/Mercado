@@ -1,10 +1,13 @@
 package controller;
 
+import Pagination.Pagination;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javafx.scene.input.MouseEvent;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,40 +26,45 @@ import Fabrica.ElementoFxmlFabrica;
 
 public class EstoqueController extends ElementoFxmlFabrica{
 	@FXML private Pane PaneEstoque;
-	@FXML private Label nomeUsuario;
-	@FXML private TextField Pesquisa;
-	@FXML private ChoiceBox<String> EscolhaPesquisa;
 	@FXML private Button pagina1;
 	@FXML private Button BotaoQuantidade;
 	@FXML private Button BotaoPreco;
-	
-	public static String staticNome;
-	
+	@FXML private ImageView testan;
+
 	private List<Produto> ListaProdutos = new ArrayList<Produto>();
+	
+	//controlador de movimentação de pagina
 	private int PaginaAtual = 1;
 	
 	private int quantItensPagInicial;
 	private int quantItensListados;
+	//-------------------------------------------------------------------
 	
 	private ProdutoBO prodBO = new ProdutoBO();
 	
+	//Ordenação
 	private boolean ordenarQuantidadeMenorParaMaior = true;
 	private boolean ordenarPrecoMenorParaMaior = true;
+	//-------------------------------------------------------------------
 	
 	public void initialize() {
-		nomeUsuario.setText(staticNome);
 		this.quantItensPagInicial = PaneEstoque.getChildren().size();
 		this.GerarTela(true);
 		
 		this.pagina1.setStyle("-fx-background-color:#d3d3d3 ;");
 		
-		this.EscolhaPesquisa.setItems(FXCollections.observableArrayList(
-				"Nome", 
-				"Cod. Barras", 
-				"Marca"));
+		 // Colocar evento de click em img
+		testan.setOnMouseClicked((MouseEvent e)->{
+			try {
+				Telas.telaMenu();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
+		//-------------------------------------------------------------------
+		}
 		
-	}
-	
 	public void OrdenarQuantidade() {
 		if(this.ordenarQuantidadeMenorParaMaior) {
 			Collections.sort(this.ListaProdutos, Comparator.comparingDouble(Produto ::getQuantidade));
@@ -103,11 +111,14 @@ public class EstoqueController extends ElementoFxmlFabrica{
 		}
 	}
 	
+	//criação de tela
 	private void RemoveInfo(boolean tudo) {
 		if (tudo) this.PaneEstoque.getChildren().remove(this.quantItensPagInicial,  this.PaneEstoque.getChildren().size());
 		else this.PaneEstoque.getChildren().remove(this.quantItensListados,  this.PaneEstoque.getChildren().size());
 	}
 	
+	//criação de tela
+	//Especifico pra essa pag
  	private void ColocarInfoNaTela() {
 		
 		int tamanhoList = this.ListaProdutos.size();
@@ -145,59 +156,31 @@ public class EstoqueController extends ElementoFxmlFabrica{
 			prod = this.ListaProdutos.get(i);
 			
 			LayX = 170.0;
-			
-			Label nome = LabelFabrica(
-					prod.getNome(), 
-					LayX, 
-					LayY, 
-					TamanhoFont, 
-					Centralizar, 
-					LarguraLabel
-					);
-			
-			LayX += distanciaEntreElementos;
-			
-			Label cod = LabelFabrica(
-					prod.getCodBarras(), 
-					LayX, LayY, 
-					TamanhoFont, 
-					Centralizar, 
-					LarguraLabel
-					);
-			
-			LayX += distanciaEntreElementos;
-			
-			Label marca = LabelFabrica(
+			String[] dados = {
+					prod.getNome(),
+					prod.getCodBarras(),
 					prod.getMarca(), 
-					LayX, 
-					LayY, 
-					TamanhoFont, 
-					Centralizar, 
-					LarguraLabel
-					);
+					String.valueOf(prod.getQuantidade()),
+					String.valueOf(prod.getPreco())
+					};
 			
-			LayX += distanciaEntreElementos;
+			for(String dado: dados) {
+				Label coluna = LabelFabrica(
+						dado, 
+						LayX, 
+						LayY, 
+						TamanhoFont, 
+						Centralizar, 
+						LarguraLabel
+						);
+				
+				LayX += distanciaEntreElementos;
+				
+				this.PaneEstoque.getChildren().add(coluna);
+			}
 			
-			Label quant = LabelFabrica(
-					String.valueOf(prod.getQuantidade()), 
-					LayX, 
-					LayY, 
-					TamanhoFont, 
-					Centralizar, 
-					LarguraLabel);
-			
-			LayX += distanciaEntreElementos;
-
-			
-			Label preco = LabelFabrica(
-					String.valueOf(prod.getPreco()), 
-					LayX, 
-					LayY, 
-					TamanhoFont, 
-					Centralizar, 
-					LarguraLabel
-					);
-			
+			LayY += 45;
+			/*
 			LayX += 90;
 			
 			Button dele = ButtonFabrica(
@@ -222,23 +205,16 @@ public class EstoqueController extends ElementoFxmlFabrica{
 					LarguraButton
 					);
 			edit.setOnAction(action -> EditarProduto(action));
+			*/
 			
-			this.PaneEstoque.getChildren().addAll(
-					nome,
-					cod,
-					marca,
-					quant,
-					preco,
-					dele,
-					edit
-					);
 			
-			LayY += 45;
+		
 		}
 		
 		
 	}
 	
+ 	//criação de tela
 	private void ColocarBotoesPag(){
 		int tamanhoList = this.ListaProdutos.size();
 		Double totalBotoes = tamanhoList/5.0;
@@ -278,6 +254,7 @@ public class EstoqueController extends ElementoFxmlFabrica{
 		}
 	}
 	
+	// criação de tela
 	private void GerarTela(boolean ColetarInfoNova) {
 		if (ColetarInfoNova) this.ListaProdutos = this.prodBO.listarTodos();
 		this.ColocarInfoNaTela();
@@ -285,6 +262,9 @@ public class EstoqueController extends ElementoFxmlFabrica{
 		this.quantItensListados = PaneEstoque.getChildren().size();;
 	}
 	
+	//criação de tela
+	//pane
+	//
 	public void MudarPagina(ActionEvent e) throws Exception {
 		Button botaoAnterior = (Button) this.PaneEstoque.lookup("#pagina"+this.PaginaAtual);
 		botaoAnterior.setStyle("-fx-background-color:#ffffff ;");
@@ -303,7 +283,7 @@ public class EstoqueController extends ElementoFxmlFabrica{
 	public void LogOut(ActionEvent event) throws Exception{
 		Telas.telaMenu();
 	}
-
+/*
 	public void DeletarProduto(ActionEvent e) {
 		Button b = (Button) e.getSource();
 		Produto prod = new Produto();
@@ -364,7 +344,7 @@ public class EstoqueController extends ElementoFxmlFabrica{
 		this.PaneEstoque.getChildren().addAll(deletar, voltar);
 		
 	}
-	
+	*/
 	public void RemersaNova() {
 		this.BaseParaNovaPagina("Nova Remessa");;
 		
@@ -462,7 +442,7 @@ public class EstoqueController extends ElementoFxmlFabrica{
 		});
 		this.PaneEstoque.getChildren().addAll( bV, bMudar);
 	}
- 
+	/*
 	public void EditarProduto(ActionEvent e) {
 		Button b = (Button) e.getSource();
 		Produto prod = new Produto();
@@ -589,7 +569,7 @@ public class EstoqueController extends ElementoFxmlFabrica{
 		});
 		this.PaneEstoque.getChildren().add(Editar);
 	}
-	
+	*/
 	public void ProdutoNovo() {
 		
 		List<Double> LXLY = this.BaseTelaNovoEEditarProduto("Produto Novo");
@@ -781,7 +761,7 @@ public class EstoqueController extends ElementoFxmlFabrica{
 		
 	}
 	
-	public void Pesquisar() {
+	/*public void Pesquisar() {
 		if (this.Pesquisa.getText() == "") {
 			this.RemoveInfo(true);
 			this.GerarTela(true);
@@ -809,8 +789,9 @@ public class EstoqueController extends ElementoFxmlFabrica{
 		this.RemoveInfo(true);
 		this.GerarTela(false);
 	}
-
-  	private void BaseParaNovaPagina(String titulo) {
+	*/
+  	
+	private void BaseParaNovaPagina(String titulo) {
 		ImageView IV = ImageFabrica(
 						525.0,
 						325.0,

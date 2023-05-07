@@ -15,7 +15,6 @@
             <Image url="@topo.png" />
          </image>
       </ImageView>
-      <Label fx:id="nomeUsuario" layoutX="70.0" layoutY="21.0" prefHeight="23.0" prefWidth="167.0" text="nomeFuncionaro" textFill="WHITE" />
       <Button fx:id="botaoSair" layoutX="887.0" layoutY="20.0" mnemonicParsing="false" onAction="#LogOut" style="-fx-background-color: #13ABC4;" text="Menu" textFill="WHITE" />
       <ImageView fitHeight="458.0" fitWidth="873.0" layoutX="80.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -36,13 +35,13 @@
          <image>
             <Image url="@CaixaPesquisa%20(1).png" />
          </image></ImageView>
-      <Button layoutX="225.0" layoutY="440.0" mnemonicParsing="false" onAction="#adicionarProduto" prefHeight="49.0" prefWidth="91.0" style="-fx-background-color: #06FF6A;" text="Adicionar produto" textAlignment="CENTER" wrapText="true" />
+      <Button layoutX="225.0" layoutY="440.0" mnemonicParsing="false" onAction="#adicionarProduto" prefHeight="49.0" prefWidth="91.0" style="-fx-background-color: #13ABC5;" text="Adicionar produto" textAlignment="CENTER" wrapText="true" />
       <ImageView fitHeight="49.0" fitWidth="152.0" layoutX="490.0" layoutY="440.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@CaixaPesquisa%20(1).png" />
          </image>
       </ImageView>
-      <Button layoutX="620.0" layoutY="438.0" mnemonicParsing="false" onAction="#FinalizarComanda" prefHeight="49.0" prefWidth="91.0" style="-fx-background-color: #06FF6A;" text="Finalizar" textAlignment="CENTER" wrapText="true" />
+      <Button layoutX="620.0" layoutY="438.0" mnemonicParsing="false" onAction="#FinalizarComanda" prefHeight="49.0" prefWidth="91.0" style="-fx-background-color: #13ABC5;" text="Finalizar" textAlignment="CENTER" wrapText="true" />
       <Label fx:id="preco" layoutX="100.0" layoutY="260.0" text="0.00" />
       <Label fx:id="precoTotalProduto" layoutX="110.0" layoutY="442.0" prefHeight="41.0" prefWidth="100.0" text="0" />
       <Label layoutX="100.0" layoutY="420.0" text="Preço Total Produto" />
