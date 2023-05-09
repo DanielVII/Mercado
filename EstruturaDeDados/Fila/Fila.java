@@ -13,23 +13,35 @@ public class Fila<T> implements FilaInter<T>{
 	@Override
 	public boolean entrarNaFila(T info) {
 		// TODO add por ultimo a info
-		return false;
+		return fila.addFim(info);
 	}
 
 	@Override
 	public T atenderProximo() {
 		// TODO remove primeira info da fila
-		return null;
+		T conteudo;
+		if(fila.estahVazia()) {
+			conteudo = null;
+		}else {
+			conteudo = fila.removeInicio().getInfo();
+		}
+		return conteudo;
 	}
 
 	@Override
 	public T proximo() {
 		// TODO so o get de quem é o proximo, sem remover
-		return null;
+		if(fila.estahVazia()) {
+			conteudo = null;
+		}else {
+			conteudo = fila.peekInicio().getInfo();
+		}
+		return conteudo;
 	}
 
-	public ListaEncadeada<T> getFila() {
-		return fila;
+	@Override
+	public int tamanho() {
+		// TODO Auto-generated method stub
+		return fila.getTamanhoAtual();
 	}
-
 }
