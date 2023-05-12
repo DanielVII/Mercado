@@ -31,6 +31,7 @@ public class Fila<T> implements FilaInter<T>{
 	@Override
 	public T proximo() {
 		// TODO so o get de quem é o proximo, sem remover
+		T conteudo;
 		if(fila.estahVazia()) {
 			conteudo = null;
 		}else {
