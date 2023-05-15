@@ -44,6 +44,9 @@ public class Telas extends Application {
 	public static void telaCaixa() throws Exception{
 		prepararCena("ve/TelaCaixa.fxml");
 	}
+	public static void telaPratileiras() throws Exception{
+		prepararCena("ve/TelaPratileiras.fxml");
+	}
 	public static void main(String[] args) {
 		launch();
 	}

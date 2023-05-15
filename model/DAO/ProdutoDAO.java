@@ -9,14 +9,13 @@ import java.sql.SQLException;
 public class ProdutoDAO extends BaseDAO<Produto>{
 	
 	public boolean inserir (Produto produto) {
-		String sql = "INSERT INTO produtos  (nome,marca,cod_de_barras,preco,quantidade) VALUES (?,?,?,?,?);";
+		String sql = "INSERT INTO produtos  (nome,marca,cod_de_barras,preco) VALUES (?,?,?,?);";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
 			pst.setString(1, produto.getNome());
 			pst.setString(2, produto.getMarca() );
 			pst.setString(3, produto.getCodBarras());
 			pst.setDouble(4, produto.getPreco());
-			pst.setDouble(5, produto.getQuantidade());
 			pst.execute();
 			return true;		
 		
@@ -43,14 +42,13 @@ public class ProdutoDAO extends BaseDAO<Produto>{
 	}
    
     public boolean alterar(Produto produto) {
-		String sql = "UPDATE produtos SET nome=?,marca=?,preco=?,quantidade=? WHERE cod_de_barras=? ";
+		String sql = "UPDATE produtos SET nome=?,marca=?,preco=? WHERE cod_de_barras=? ";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
 			pst.setString(1, produto.getNome());
 			pst.setString(2, produto.getMarca() );
 			pst.setDouble(3, produto.getPreco());
-			pst.setDouble(4, produto.getQuantidade());
-			pst.setString(5, produto.getCodBarras());
+			pst.setString(4, produto.getCodBarras());
 			pst.executeUpdate();
 			return true;		
 		

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.entity.Produto;
-import model.DAO.BaseInterDAO;
 import model.DAO.ProdutoDAO;
 
 public class ProdutoBO implements BaseInterBO<Produto>{
@@ -56,22 +55,22 @@ public class ProdutoBO implements BaseInterBO<Produto>{
 		}else return false;
 	}
 
-	public List<Produto> listarPorCampoEspecifico(Produto produto, String campo){
+	public Produto[] listarPorCampoEspecifico(Produto produto, String campo){
 		List<Produto> Produtos = new ArrayList<Produto>();
 		ResultSet rs = dao.encontrarPorCampoEspecifico(produto, campo);
 		try {
 			while(rs.next()) {
 				Produto produtoLista = new Produto();
+				produtoLista.setId(rs.getInt("id_produto"));
 				produtoLista.setNome(rs.getString("nome"));
 				produtoLista.setMarca(rs.getString("marca"));
 				produtoLista.setCodBarras(rs.getString("cod_de_barras"));
-				produtoLista.setQuantidade(rs.getDouble("quantidade"));
 				produtoLista.setPreco(rs.getDouble("preco"));
 				
 
 				Produtos.add(produtoLista);
 			}
-			return Produtos;
+			return Produtos.toArray(new Produto[Produtos.size()]);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -85,10 +84,10 @@ public class ProdutoBO implements BaseInterBO<Produto>{
 		try {
 			while(rs.next()) {
 				Produto produtoLista = new Produto();
+				produtoLista.setId(rs.getInt("id_produto"));
 				produtoLista.setNome(rs.getString("nome"));
 				produtoLista.setMarca(rs.getString("marca"));
 				produtoLista.setCodBarras(rs.getString("cod_de_barras"));
-				produtoLista.setQuantidade(rs.getDouble("quantidade"));
 				produtoLista.setPreco(rs.getDouble("preco"));
 
 				Produtos.add(produtoLista);
@@ -101,21 +100,21 @@ public class ProdutoBO implements BaseInterBO<Produto>{
 		}
 	}
 
-	public List<Produto> listarTodos(){
+	public Produto[] listarTodos(){
 		List<Produto> Produtos = new ArrayList<Produto>();
 		ResultSet rs = dao.encontrarTodos();
 		try {
 			while(rs.next()) {
 				Produto produtoLista = new Produto();
+				produtoLista.setId(rs.getInt("id_produto"));
 				produtoLista.setNome(rs.getString("nome"));
 				produtoLista.setMarca(rs.getString("marca"));
 				produtoLista.setCodBarras(rs.getString("cod_de_barras"));
-				produtoLista.setQuantidade(rs.getDouble("quantidade"));
 				produtoLista.setPreco(rs.getDouble("preco"));
 
 				Produtos.add(produtoLista);
 			}
-			return Produtos;
+			return Produtos.toArray(new Produto[Produtos.size()]);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

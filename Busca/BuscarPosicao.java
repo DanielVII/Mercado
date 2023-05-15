@@ -14,7 +14,7 @@ public class BuscarPosicao implements BuscarPosicaoInter {
 		int posicao = -1;
 		
 		for (int x = 0; x < this.produtos.length; x++) {
-			if(this.produtos[x].getNome().equals(nome)) {
+			if(this.produtos[x].getNome().toLowerCase().equals(nome.toLowerCase())) {
 				posicao = x;
 				break;
 			}

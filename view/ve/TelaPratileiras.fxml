@@ -9,7 +9,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane fx:id="PaneEstoque" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EstoqueController">
+<Pane fx:id="PanePratileira" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PratileirasController">
    <children>
       <ImageView fx:id="testan" fitHeight="75.0" fitWidth="961.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -39,8 +39,8 @@
          <font>
             <Font size="13.0" />
          </font></Label>
-      <Button fx:id="oi" layoutX="699.0" layoutY="85.0" mnemonicParsing="false" onAction="#RemersaNova" style="-fx-background-color: #13ABC5;" text="Add Remessa " />
-      <Button layoutX="699.0" layoutY="118.0" mnemonicParsing="false" onAction="#ProdutoNovo" style="-fx-background-color: #13ABC5;" text="Novo Produto" />
+      <Button layoutX="699.0" layoutY="85.0" mnemonicParsing="false" onAction="#ModoFuncionario" style="-fx-background-color: #13ABC5;" text="Funcionario" />
+      <Button layoutX="711.0" layoutY="118.0" mnemonicParsing="false" onAction="#ModoCliente" style="-fx-background-color: #13ABC5;" text="Cliente" />
 	      <Line endX="468.0" layoutX="338.0" layoutY="190.0" startX="-185.0" />
 	      <Line endX="468.0" layoutX="338.0" layoutY="235.0" startX="-185.0" />
 	      <Line endX="468.0" layoutX="338.0" layoutY="280.0" startX="-185.0" />
@@ -53,16 +53,32 @@
             <Font size="7.0" />
          </font>
       </Button>
-      <Button fx:id="BotaoQuantidade" layoutX="439.0" layoutY="156.0" mnemonicParsing="false" onAction="#OrdenarQuantidade" style="-fx-background-color: #5BD0E3; -fx-border-color: #fff;" text="Quantidade">
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </Button>
-      <Label layoutX="277.0" layoutY="93.0" text="Gerenciamento de Estoque">
+      <Label layoutX="390.0" layoutY="81.0" text="Pratileiras">
          <font>
             <Font size="23.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="536.0" layoutY="161.0" prefWidth="80.0" text="Preço" />
+      <Label alignment="CENTER" layoutX="439.0" layoutY="160.0" prefHeight="17.0" prefWidth="80.0" text="Quantidade">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="529.0" layoutY="160.0" prefHeight="17.0" prefWidth="80.0" text="Preço">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Button layoutX="747.0" layoutY="457.0" mnemonicParsing="false" onAction="#EntrarNaFila" style="-fx-background-color: #13ABC5;" text="Entrar na fila" />
+      <Label fx:id="NomeCliente" alignment="CENTER" layoutX="130.0" layoutY="460.0" prefHeight="17.0" prefWidth="80.0" text="NomeCliente">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <TextField layoutX="153.0" layoutY="118.0" />
+      <Label alignment="CENTER" layoutX="300.0" layoutY="121.0" prefWidth="80.0" text="Seção:">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
    </children>
 </Pane>
