@@ -1,6 +1,7 @@
 package model.entity;
 
 public class Produto {
+	int id;
     private String nome, marca, codDeBarras;
     private Double preco, quantidade;
 
@@ -9,6 +10,14 @@ public class Produto {
      * questão e, após verificação, ele será trocado pelo novo valor
     */
 
+    public int getId() {
+    	return id;
+    }
+    
+    public void setId(int id) {
+    	this.id = id;
+    }
+    
     public void setNome(String nome) {
     	if (!nome.isEmpty()){
     		this.nome = nome;

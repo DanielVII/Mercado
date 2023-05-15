@@ -12,4 +12,8 @@ public class MenuController {
 	public void GoEstoque(ActionEvent event) throws Exception{
 		Telas.telaEstoque();
 	}
+	
+	public void GoPratileiras(ActionEvent event) throws Exception{
+		Telas.telaPratileiras();
+	}
 }
